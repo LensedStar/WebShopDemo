@@ -3,7 +3,7 @@ import {useAppSelector,useAppDispatch} from "../../store/hooks";
 import {plusAmount,minusAmount,removeItem,removeAllItems} from "../../store/slices/cartSlice";
 import {fetchAddress} from "../../store/slices/addressSlice";
 import {putOrder} from "../../store/slices/orderSlice";
-import AddressForm from "../Address/AddressForm";
+import AddressForm from "../AddressForm/AddressForm";
 import "./Card.scss"
 
 
