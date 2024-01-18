@@ -1,4 +1,4 @@
-import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import APIMAP from "../../APIMAP";
 
 type Item = {

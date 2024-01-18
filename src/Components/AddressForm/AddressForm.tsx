@@ -39,7 +39,7 @@ export default function AddressForm(){
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="orderFormInput">
-                <p>Adress</p>
+                <p>Address</p>
                 <input type="text" {...register("address",{required:true})}/>
             </div>
             <div className="orderFormInput">

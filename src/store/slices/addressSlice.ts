@@ -1,7 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import API_MAP from "../../APIMAP";
-import {stat} from "fs";
-import axios from "axios";
 
 type OrderType = {
     ship_To_Address: string,
