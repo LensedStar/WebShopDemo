@@ -31,7 +31,6 @@ export default function Cart(){
         }
     }, [dispatch,token]);
 
-    console.log(address)
 
 
     const handlePlus = (id:string) =>{
@@ -48,7 +47,6 @@ export default function Cart(){
     const handleOrder = ()=>{
         if (token && addressId) {
             Object.values(store).forEach((item)=>{
-                console.log(item)
                 const orderData : OrderItems = {
                     item_Lookup:item.key,
                     quantity: item.quantity,

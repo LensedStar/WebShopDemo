@@ -38,7 +38,6 @@ type putOrderType = {
 export const putOrder = createAsyncThunk<OrdersType,putOrderType>("order/put",
     async (orderItem)=>{
          const {order,token} = orderItem
-        console.log(JSON.stringify(order))
         const response = await fetch(`${API_MAP.putItemOrder}`,{
             method:"PUT",
             headers: {
@@ -89,7 +88,6 @@ const orderSlice = createSlice({
         })
             .addCase(fetchOrder.fulfilled,(state,action)=>{
                 state.orders = action.payload
-                console.log(action.payload)
         })
     }
 })

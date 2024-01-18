@@ -22,13 +22,11 @@ function Items () {
 
     useEffect(() => {
         if (token){
-            console.log(token)
         dispatch(fetchItems(token))
             }
     }, [token]);
 
     const handleAddToCart = (item:CartItem) =>{
-        console.log(item)
         dispatch(addItem(item))
     }
 

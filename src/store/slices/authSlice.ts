@@ -14,7 +14,6 @@ export const fetchToken = createAsyncThunk<string>(
         const response = await axios.post(API_MAP.token,
             {email:"admin@local",password:"Admin"})
         const responseData =  await response.data
-        console.log(responseData.token)
         return responseData.token
     }
 )
