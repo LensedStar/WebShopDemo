@@ -1,0 +1,70 @@
+
+.cartlist{
+  display: flex;
+  flex-direction: row;
+}
+
+.cartContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.orderButton{
+  height: 50px;
+  width:300px;
+}
+
+.cartItem{
+  margin: 10px;
+  border: black solid 1px;
+  padding: 10px;
+  width: 200px;
+  height: 200px;
+  background-color: rgba(70, 70, 108, 0.58);
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: flex-start;
+}
+
+
+.orderAddress{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.addressList{
+  display: flex;
+  flex-direction: row;
+  max-width: 90%;
+  flex-wrap: wrap;
+  justify-content: center;
+  .addressDetails{
+    margin: 10px;
+    border: black solid 1px;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(70, 70, 108, 0.58);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .addressDetailsSelected{
+    margin: 10px;
+    border: black solid 1px;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(75, 108, 70, 0.58);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+}
