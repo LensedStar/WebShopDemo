@@ -17,13 +17,13 @@ type OrderItems = {
 }
 
 export default function Cart(){
+    const [addressId,setAddressId] = useState<string|null>(null)
+
     const store = useAppSelector(state => state.cart.items)
-    const dispatch = useAppDispatch()
     const token = useAppSelector(store=>store.token.token)
     const address = useAppSelector(store=>store.address.addressList)
 
-
-    const [addressId,setAddressId] = useState<string|null>(null)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if(token) {

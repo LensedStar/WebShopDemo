@@ -5,12 +5,15 @@ import {fetchOrder} from "../../store/slices/orderSlice";
 import "./OrderHistoryStyle.scss"
 
 export default function OrderHistory(){
+    const [filterParam,setFilterParam] = useState<string>("")
+
     const orderHistory = useAppSelector(store=>store.orders.orders)
     const token = useAppSelector(store=>store.token.token)
     const address = useAppSelector(store=>store.address.addressList)
+
     const dispatch = useAppDispatch()
 
-    const [filterParam,setFilterParam] = useState<string>("")
+
 
     useEffect(() => {
         if(token) {
