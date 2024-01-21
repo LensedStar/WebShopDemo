@@ -2,6 +2,8 @@ import {createSlice,createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 
 import API_MAP from "../../APIMAP";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 type initialStateType = {
     token:string | null
@@ -30,6 +32,9 @@ const authSlice = createSlice({
         builder
             .addCase(fetchToken.fulfilled,(state,action)=>{
                 state.token = action.payload
+            })
+            .addCase(fetchToken.rejected,()=>{
+                throw new Error("Something went wrong")
             })
     }
 })

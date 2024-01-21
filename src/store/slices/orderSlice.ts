@@ -86,9 +86,16 @@ const orderSlice = createSlice({
                     state.orders = [action.payload]
                 }
         })
+            .addCase(putOrder.rejected,()=>{
+                throw new Error("Something went wrong")
+            })
+
             .addCase(fetchOrder.fulfilled,(state,action)=>{
                 state.orders = action.payload
         })
+            .addCase(fetchOrder.rejected,()=>{
+                throw new Error("Something went wrong")
+            })
     }
 })
 

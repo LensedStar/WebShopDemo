@@ -41,6 +41,9 @@ const itemsSlice = createSlice({
             .addCase(fetchItems.fulfilled,(store,action)=>{
                 store.list = action.payload
             })
+            .addCase(fetchItems.rejected,()=>{
+                throw new Error("Something went wrong")
+            })
     }
 })
 
