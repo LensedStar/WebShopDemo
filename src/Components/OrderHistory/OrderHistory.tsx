@@ -11,7 +11,7 @@ export default function OrderHistory(){
 
     const {data:addressData} = useGetAllAddressesQuery()
 
-    const [mutator] = useDeleteOrderMutation()
+    const [mutator,{isLoading:isLoadingMutator,data:mutatorData}] = useDeleteOrderMutation()
 
     return(
         <div className="orderHistoryContainer">
@@ -23,11 +23,11 @@ export default function OrderHistory(){
                         )
                     })
                 }
-                <option value="">All</option>
+                <option value={""}>All</option>
             </select>
         <div className="orderHistoryList">
             {
-                data ?
+                data && data.length > 0 ?
                     data.map(order=>{
                         const {key,name,amount,quantity,id} = order
                         return(
@@ -40,11 +40,14 @@ export default function OrderHistory(){
                         )
                     })
                         :
-                    isLoading ? <h1>loading...</h1>
+                    isLoading || isLoadingMutator? <h1>loading...</h1>
                         :
                     error ? <h1>Error!</h1>
                         :
+                         data && data.length === 0 ?
                     <h2>You dont have any order yet</h2>
+                             :
+                             null
             }
         </div>
         </div>

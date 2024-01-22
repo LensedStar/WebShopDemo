@@ -8,7 +8,7 @@ import API_MAP from "../../APIMAP";
 
 export const Api = createApi({
     reducerPath: "services/itemsApi",
-    tagTypes:['Address','Products'],
+    tagTypes:['Address','Orders'],
     baseQuery: fetchBaseQuery({
         baseUrl: API_MAP.baseURL,
         prepareHeaders: (headers, { getState }) => {
@@ -46,12 +46,15 @@ export const Api = createApi({
             invalidatesTags:["Address"]
         }),
         getAllOrders:builder.query<Order[],string | "">({
-            query:(id)=>({
-                url: !id ? "Order Item/" : `Order Item?$filter=order_Lookup eq ${id}/`,
-                providesTags: (result:OrdersType[])  =>
+            query:(id:string | "")=>({
+                url: !id ? "Order Item/" : `Order Item?$filter=order_Lookup eq ${id}`,
+                providesTags:(result:Order[]) =>
                     result
-                        ? [...result.map(({ id }) => ({ type: 'Products' as const,id })),'Products']
-                        : ['Products'],
+                        ? [
+                            ...result.map(({ id }) => ({ type: "Orders" as const, id })),
+                            { type: 'Orders', id: 'LIST' },
+                        ]
+                        : [{ type: 'Orders', id: 'LIST' }],
             })
         }
         ),
@@ -61,14 +64,14 @@ export const Api = createApi({
             method:"PUT",
             body:order
          }),
-            invalidatesTags:["Products"]
+            invalidatesTags:[{type:"Orders",id:"LIST"}]
         }),
         deleteOrder:builder.mutation<void,string>({
             query:(id)=>({
                 url:`Order Item/${id}`,
                 method:"DELETE"
             }),
-            invalidatesTags:["Products"]
+            invalidatesTags:["Orders"]
         })
     }),
 });
