@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useAppSelector,useAppDispatch} from "../../store/hooks";
+import {useGetAllAddressesQuery, useDeleteAddressMutation, usePutOrderMutation} from "../../store/services/api";
 import {plusAmount,minusAmount,removeItem,removeAllItems} from "../../store/slices/cartSlice";
-import {fetchAddress} from "../../store/slices/addressSlice";
-import {putOrder} from "../../store/slices/orderSlice";
 import AddressForm from "../AddressForm/AddressForm";
 import "./Card.scss"
 
@@ -20,17 +19,11 @@ export default function Cart(){
     const [addressId,setAddressId] = useState<string|null>(null)
 
     const store = useAppSelector(state => state.cart.items)
-    const token = useAppSelector(store=>store.token.token)
-    const address = useAppSelector(store=>store.address.addressList)
+    const {data,isLoading,isError} = useGetAllAddressesQuery()
+    const [mutation,] = useDeleteAddressMutation()
+    const [putOrderMutator] = usePutOrderMutation()
 
     const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        if(token) {
-            dispatch(fetchAddress(token))
-        }
-    }, [dispatch,token]);
-
 
 
     const handlePlus = (id:string) =>{
@@ -45,7 +38,7 @@ export default function Cart(){
     }
 
     const handleOrder = ()=>{
-        if (token && addressId) {
+        if (addressId) {
             Object.values(store).forEach((item)=>{
                 const orderData : OrderItems = {
                     item_Lookup:item.key,
@@ -55,10 +48,7 @@ export default function Cart(){
                     name: item.name,
                     order_Lookup:addressId
                     }
-              dispatch(putOrder({
-                  order:orderData,
-                  token:token
-              }))
+              putOrderMutator(orderData)
             })
             dispatch(removeAllItems())
         }
@@ -66,6 +56,7 @@ export default function Cart(){
             alert("Select address first!")
         }
         }
+
     return(
         <div className="cartContainer">
             <h1>Your cart</h1>
@@ -98,15 +89,15 @@ export default function Cart(){
             <div className="orderAddress">
                 <h1>Select Address Details</h1>
                 <div className="addressList">
-                    {address ?
-                            address.map(ad=>{
+                    {data && data.length ?
+                            data.map(addr=>{
                                 const {
                                     ship_To_Address
                                     ,ship_To_Name,
                                     ship_To_City,
                                     ship_To_Post_Code,
                                     key,
-                                    id} = ad
+                                    id} = addr
                                 return(
                                     <div className={key === addressId ? "addressDetailsSelected" : "addressDetails"} key={key}>
                                         <div>{ship_To_Address}</div>
@@ -114,13 +105,19 @@ export default function Cart(){
                                         <div>{ship_To_Post_Code}</div>
                                         <div>{ship_To_City}</div>
                                         <button onClick={()=>setAddressId(key)}> Select Address</button>
+                                        <button onClick={()=>mutation(id)}>DELETE</button>
                                     </div>
                             )})
+
                         :
-                        <h1>You dont have any saved address</h1>
+                        isLoading ? <h1>Loading...</h1>
+                        :
+                        isError ? <h1>Error!</h1>
+                        :
+                        <h1>You dont have any address yet!</h1>
                     }
                 </div>
-                <AddressForm />
+            <AddressForm />
             </div>
         </div>
     )

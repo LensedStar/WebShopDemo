@@ -1,8 +1,7 @@
-import React, {useEffect} from "react";
+
+import React from "react";
 import {useForm,SubmitHandler} from "react-hook-form";
-import {useAppDispatch} from "../../store/hooks";
-import {useAppSelector} from "../../store/hooks";
-import {putAddress,fetchAddress} from "../../store/slices/addressSlice";
+import {usePutNewAddressMutation} from "../../store/services/api";
 import "./AdressFormStyle.scss"
 
 type Inputs = {
@@ -13,27 +12,22 @@ type Inputs = {
 }
 
 export default function AddressForm(){
-    const token = useAppSelector(state => state.token.token)
-    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit
     } = useForm<Inputs>()
 
+    const [mutator] = usePutNewAddressMutation()
 
     const onSubmit:SubmitHandler<Inputs> = (data,event) =>{
         event?.preventDefault()
-        if (token) {
-            dispatch(putAddress({
-                orders: {
-                    ship_To_Address: data.address,
-                    ship_To_Post_Code: data.code,
-                    ship_To_Name: data.name,
-                    ship_To_City: data.city,
-                },
-                token: token
-            }))
-        }
+        const {address,code,name,city} = data
+        mutator({
+            ship_To_Address:address,
+            ship_To_Post_Code:code,
+            ship_To_Name:name,
+            ship_To_City:city,
+        })
     }
 
     return(
@@ -58,3 +52,4 @@ export default function AddressForm(){
         </form>
     )
 }
+

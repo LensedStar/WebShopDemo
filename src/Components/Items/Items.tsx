@@ -1,7 +1,8 @@
-import React, {useEffect} from "react";
-import {fetchItems} from "../../store/slices/itemsSlice"
-import {useAppDispatch,useAppSelector} from "../../store/hooks";
+import React from "react";
+import {useAppDispatch} from "../../store/hooks";
+import {useAppSelector} from "../../store/hooks";
 import {addItem} from "../../store/slices/cartSlice";
+import { useGetAllItemsQuery } from "../../store/services/api";
 
 import "./ItemsStyle.scss"
 
@@ -15,17 +16,15 @@ type CartItem = {
 }
 
 function Items () {
-    const token = useAppSelector(state => state.token.token)
-    const items = useAppSelector(state => state.items.list)
+    const token = useAppSelector(state => state.auth.token)
     const dispatch = useAppDispatch()
+    const {data, error, isLoading } = useGetAllItemsQuery()
 
 
-    useEffect(() => {
-        if (token){
-        dispatch(fetchItems(token))
-            }
-    }, [token]);
 
+    if(error){
+        console.log(data,error)
+    }
     const handleAddToCart = (item:CartItem) =>{
         dispatch(addItem(item))
     }
@@ -34,9 +33,10 @@ function Items () {
         <div className="ItemContainer">
             <h1>Item List</h1>
         <div className="itemList">
-        {
-            items ?
-                items.map(item=>{
+            {isLoading ?
+                <h1>Loading...</h1>
+                : data ?
+                data.map(item=>{
                     const {key,name,description,amount,id} = item
                     return(
                         <div key={key} >
@@ -54,10 +54,8 @@ function Items () {
 
                         </div>
                     )
-                })
-                :
-                <h1>Loading...</h1>
-        }
+                }): error ? <h1>Something wrong</h1>
+            : null}
         </div>
         </div>
     )

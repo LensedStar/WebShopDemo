@@ -1,8 +1,6 @@
-import React, {useEffect, useState,createContext} from 'react';
-import {Provider} from "react-redux";
-import {store} from "./store/store";
+import React, {useEffect} from 'react';
 import Items from "./Components/Items/Items";
-import {useAppDispatch} from "./store/hooks";
+import {useAppDispatch,useAppSelector} from "./store/hooks";
 import {fetchToken} from "./store/slices/authSlice";
 import Cart from "./Components/Cart/Cart";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
@@ -10,18 +8,28 @@ import "./AppStyle.scss"
 
 
 function App() {
+    const auth = useAppSelector(store=>store.auth)
     const dispatch = useAppDispatch()
+
     useEffect(() => {
         dispatch(fetchToken())
     }, []);
+
+
   return (
+      <>
+          { auth.loading ?
+              <h1>Loading</h1>
+              :
+              auth.token ?
       <div className="app">
-      <Provider store={store}>
           <Items />
           <Cart />
           <OrderHistory />
-      </Provider>
-      </div>
+      </div> :
+                  <h1>Error</h1>
+          }
+      </>
   );
 }
 
